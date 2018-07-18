@@ -1,8 +1,9 @@
-package org.eve.framework.array;
+package org.eve.framework;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author xiayc
@@ -44,5 +45,9 @@ public class Utils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String toString(List<Character> list){
+        return null;
     }
 }
