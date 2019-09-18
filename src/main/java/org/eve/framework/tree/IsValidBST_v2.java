@@ -1,7 +1,6 @@
 package org.eve.framework.tree;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.eve.framework.Utils;
 
 /**
  * 验证二叉搜索树
@@ -15,9 +14,14 @@ import java.util.List;
  * @author jc
  * @date 2019/9/18 0:06
  */
-public class IsValidBST {
+public class IsValidBST_v2 {
     public static void main(String[] args) {
+        TreeNode root = Utils.buildTree(5, 1, 4, null, null, 3, 6);
+        System.out.println(new IsValidBST_v2().isValidBST(root));
+    }
 
+    private class Last {
+        Integer val;
     }
 
     public boolean isValidBST(TreeNode root) {
@@ -25,26 +29,20 @@ public class IsValidBST {
             return true;
         }
         //利用深度中序遍历来确认
-        List<Integer> valList = new ArrayList<>();
-        doValidBST(valList, root);
-        for (int i = 0; i < valList.size() - 1; i++) {
-            if (valList.get(i) >= valList.get(i + 1)) {
-                return false;
-            }
-        }
-        return true;
+        return doValidBST(new Last(), root);
     }
 
-    private void doValidBST(List<Integer> valList, TreeNode node) {
-        if (node == null) {
-            return;
+    private boolean doValidBST(Last last, TreeNode node) {
+        if (node.left != null && !doValidBST(last, node.left)) {
+            return false;
         }
-        if (node.left != null) {
-            doValidBST(valList, node.left);
+        if (last.val != null && last.val >= node.val) {
+            return false;
         }
-        valList.add(node.val);
-        if (node.right != null) {
-            doValidBST(valList, node.right);
+        last.val = node.val;
+        if (node.right != null && !doValidBST(last, node.right)) {
+            return false;
         }
+        return true;
     }
 }
