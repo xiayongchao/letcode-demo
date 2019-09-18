@@ -1,5 +1,8 @@
 package org.eve.framework.tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 验证二叉搜索树
  * 给定一个二叉树，判断其是否是一个有效的二叉搜索树。
@@ -13,44 +16,35 @@ package org.eve.framework.tree;
  * @date 2019/9/18 0:06
  */
 public class IsValidBST {
+    public static void main(String[] args) {
+
+    }
+
     public boolean isValidBST(TreeNode root) {
         if (root == null) {
             return true;
         }
-        if (root.left != null && root.left.val >= root.val) {
-            return false;
+        //利用深度中序遍历来确认
+        List<Integer> valList = new ArrayList<>();
+        doValidBST(valList, root);
+        for (int i = 0; i < valList.size() - 1; i++) {
+            if (valList.get(i) >= valList.get(i + 1)) {
+                return false;
+            }
         }
-        if (root.right != null && root.right.val <= root.val) {
-            return false;
-        }
-        return isValidBSTLeft(root.val, root.left) && isValidBSTRight(root.val, root.right);
+        return true;
     }
 
-    public boolean isValidBSTLeft(int pVal, TreeNode root) {
-        if (root == null) {
-            return true;
+    private void doValidBST(List<Integer> valList, TreeNode node) {
+        if (node == null) {
+            return;
         }
-        if (root.left != null && root.left.val >= root.val) {
-            return false;
+        if (node.left != null) {
+            doValidBST(valList, node.left);
         }
-        if (root.right != null && (root.right.val <= root.val || root.right.val >= pVal)) {
-            return false;
+        valList.add(node.val);
+        if (node.right != null) {
+            doValidBST(valList, node.right);
         }
-        return isValidBSTLeft(Math.min(root.val, pVal), root.left)
-                && isValidBSTRight(Math.max(root.val, pVal), root.right);
-    }
-
-    public boolean isValidBSTRight(int pVal, TreeNode root) {
-        if (root == null) {
-            return true;
-        }
-        if (root.left != null && (root.left.val >= root.val || root.left.val <= pVal)) {
-            return false;
-        }
-        if (root.right != null && root.right.val <= root.val) {
-            return false;
-        }
-        return isValidBSTLeft(Math.min(root.val, pVal), root.left)
-                && isValidBSTRight(Math.max(root.val, pVal), root.right);
     }
 }
