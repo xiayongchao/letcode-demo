@@ -12,6 +12,20 @@ import java.util.List;
  * @date 2018/7/12
  */
 public class Utils {
+    /**
+     * 广度优先
+     *
+     * @param root
+     */
+    public static void printTreeNode(TreeNode root) {
+        if (root == null) {
+            System.out.print("null ");
+            return;
+        }
+        System.out.print(root.val + " ");
+        printTreeNode(root.left);
+        printTreeNode(root.right);
+    }
 
     public static TreeNode buildTree(Integer... array) {
         if (array == null || array.length == 0 || array[0] == null) {
