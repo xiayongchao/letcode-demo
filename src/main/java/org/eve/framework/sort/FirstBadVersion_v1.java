@@ -9,12 +9,12 @@ package org.eve.framework.sort;
  * @author jc
  * @date 2019/9/19 23:10
  */
-public class FirstBadVersion extends VersionControl {
+public class FirstBadVersion_v1 extends VersionControl {
     public static void main(String[] args) {
         first_error_version = 1;
 
 
-        System.out.println(new FirstBadVersion().firstBadVersion(4));
+        System.out.println(new FirstBadVersion_v1().firstBadVersion(4));
     }
 
     public int firstBadVersion(int n) {
