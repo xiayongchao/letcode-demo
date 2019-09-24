@@ -48,7 +48,7 @@ public class ReverseBits {
         /*if (n < 0) {
             n = ~(n - 1);
         }*/
-        int divisor, remainder, x = 31, result = 0;
+        int divisor, remainder, x = 30, result = 0;
         do {
             divisor = n / 2;
             remainder = n % 2;
