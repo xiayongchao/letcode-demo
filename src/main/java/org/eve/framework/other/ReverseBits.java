@@ -25,30 +25,31 @@ public class ReverseBits {
         System.out.println(0b00111001011110000010100101000000);
         System.out.println(new ReverseBits().reverseBits(0b00000010100101000001111010011100));
         System.out.println("-------------------------------------");
-
-        /*
-        输入：11111111111111111111111111111101
-        输出：10111111111111111111111111111111
-        解释：输入的二进制串 11111111111111111111111111111101 表示无符号整数 4294967293，
-        因此返回 3221225471 其二进制表示形式为 10101111110010110010011101101001。
-        */
+        System.out.println(0b11111111111111111111111111111101);
         System.out.println(new ReverseBits().reverseBits(0b11111111111111111111111111111101));
-//                                                          0b00111001011110000010100101000000
-//        System.out.println(new ReverseBits().reverseBits(0b11111111111111111111111111111101));
-
+        System.out.println("-------------------------------------");
         /*
-        输入：11111111111111111111111111111101
-        输出：3221225472 (11000000000000000000000000000000)
-        预期：3221225471 (10111111111111111111111111111111)
+        输入：10010110111001001101001111110101
+        输出：3493124245 (11010000001101001101100010010101)
+        预期：2949326697 (10101111110010110010011101101001)
          */
+        System.out.println(0b10010110111001001101001111110101);
+        System.out.println(0b10101111110010110010011101101001);
+        System.out.println(new ReverseBits().reverseBits(0b10010110111001001101001111110101));
+        System.out.println("-------------------------------------");
     }
 
     // you need treat n as an unsigned value
     public int reverseBits(int n) {
-        /*if (n < 0) {
-            n = ~(n - 1);
-        }*/
         int divisor, remainder, x = 30, result = 0;
+        boolean f = false;
+        if (n < 0) {
+            n = -n;
+//            n = ~(n - 1);
+            System.out.println(n);
+            f = true;
+//            result--;
+        }
         do {
             divisor = n / 2;
             remainder = n % 2;
@@ -59,11 +60,15 @@ public class ReverseBits {
             x--;
             n = divisor;
         } while (n > 0);
-
         for (int i = 0; i <= x; i++) {
             System.out.print(0);
         }
         System.out.println();
+/*
+        if (f) {
+            return (~(-result)) + 1;
+        }
+*/
         return result;
     }
 }
