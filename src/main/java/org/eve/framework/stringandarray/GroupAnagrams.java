@@ -2,10 +2,7 @@ package org.eve.framework.stringandarray;
 
 import org.eve.framework.Gsons;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 字谜分组
@@ -30,11 +27,18 @@ public class GroupAnagrams {
 
         System.out.println((int) 'a');
         System.out.println((char) 122);
-        List<List<String>> lists = new GroupAnagrams().groupAnagrams(new String[]{"cab", "tin", "pew", "duh", "may", "ill", "buy", "bar", "max", "doc"});
+        List<List<String>> lists = new GroupAnagrams().groupAnagrams(new String[]{"ron", "huh", "gay", "tow", "moe", "tie", "who", "ion", "rep", "bob", "gte", "lee", "jay", "may", "wyo", "bay", "woe", "lip", "tit", "apt", "doe", "hot", "dis", "fop", "low", "bop", "apt", "dun", "ben", "paw", "ere", "bad", "ill", "fla", "mop", "tut", "sol", "peg", "pop", "les"});
+//        List<List<String>> lists = new GroupAnagrams().groupAnagrams(new String[]{"cab", "tin", "pew", "duh", "may", "ill", "buy", "bar", "max", "doc"});
 //        List<List<String>> lists = new GroupAnagrams().groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"});
         for (List<String> list : lists) {
             System.out.println(Gsons.getJson(list));
         }
+    }
+
+    private int hash(String str) {
+        char[] chars = str.toCharArray();
+        Arrays.sort(chars);
+        return new String(chars).hashCode();
     }
 
     public List<List<String>> groupAnagrams(String[] strs) {
@@ -56,13 +60,5 @@ public class GroupAnagrams {
             lists.add(entry.getValue());
         }
         return lists;
-    }
-
-    private int hash(String str) {
-        int hash = 0;
-        for (char c : str.toCharArray()) {
-            hash = hash + (c - 97) + (c - 97) * 1000;
-        }
-        return hash;
     }
 }
