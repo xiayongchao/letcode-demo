@@ -3,7 +3,9 @@ package org.eve.framework.stringandarray;
 import org.eve.framework.Gsons;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 字谜分组
@@ -20,7 +22,16 @@ import java.util.List;
  */
 public class GroupAnagrams {
     public static void main(String[] args) {
-        List<List<String>> lists = new GroupAnagrams().groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"});
+        int c = 0;
+        for (int i = 1; i < 27; i++) {
+            c = c + i;
+        }
+        System.out.println(c);
+
+        System.out.println((int) 'a');
+        System.out.println((char) 122);
+        List<List<String>> lists = new GroupAnagrams().groupAnagrams(new String[]{"cab", "tin", "pew", "duh", "may", "ill", "buy", "bar", "max", "doc"});
+//        List<List<String>> lists = new GroupAnagrams().groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"});
         for (List<String> list : lists) {
             System.out.println(Gsons.getJson(list));
         }
@@ -29,15 +40,29 @@ public class GroupAnagrams {
     public List<List<String>> groupAnagrams(String[] strs) {
         List<List<String>> lists = new ArrayList<>();
         List<String> list;
-
-        for (int i = 0; i < strs.length; i++) {
-            for (int j = 0; j < strs.length; j++) {
-                if (i != j) {
-
-                }
+        Map<Integer, List<String>> map = new HashMap<>(strs.length);
+        int hash;
+        for (String str : strs) {
+            hash = hash(str);
+            if (map.containsKey(hash)) {
+                list = map.get(hash);
+            } else {
+                list = new ArrayList<>();
+                map.put(hash, list);
             }
+            list.add(str);
         }
-
+        for (Map.Entry<Integer, List<String>> entry : map.entrySet()) {
+            lists.add(entry.getValue());
+        }
         return lists;
+    }
+
+    private int hash(String str) {
+        int hash = 0;
+        for (char c : str.toCharArray()) {
+            hash = hash + (c - 97) + (c - 97) * 1000;
+        }
+        return hash;
     }
 }
