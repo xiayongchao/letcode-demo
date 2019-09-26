@@ -1,8 +1,5 @@
 package org.eve.framework.stringandarray;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 最长回文子串
  * 给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
@@ -28,29 +25,21 @@ public class LongestPalindrome {
 
     public String longestPalindrome(String s) {
         char[] chars = s.toCharArray();
-        Map<Character, Integer> map = new HashMap<>(chars.length);
-        int start = 0, max = 0, temp = 0;
-        for (int i = 0; i < chars.length; i++) {
-            if (chars.length - start < max) {
-                break;
-            }
-            if (temp == 0 && i + 1 < chars.length && chars[i] == chars[i + 1]) {
+        int left = 0, right = chars.length;
+        String longest = null;
+        boolean movLeft = false;
+        while (left < right) {
+            if (chars[left] != chars[right]) {
+                if (movLeft) {
+                    left++;
+                } else {
+                    right--;
+                }
                 continue;
             }
-            if (map.getOrDefault(chars[i], -1) < start) {
-                temp++;
-            } else {
-                if (temp > max) {
-                    max = temp;
-                }
-                start = map.get(chars[i]) + 1;
-                temp = i - start + 1;
-            }
-            map.put(chars[i], i);
+
+            movLeft = !movLeft;
         }
-        if (temp > max) {
-            max = temp;
-        }
-        return max;
+        return longest;
     }
 }
