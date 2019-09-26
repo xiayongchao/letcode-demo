@@ -26,15 +26,96 @@ public class SortedArrayToBST {
 
     public TreeNode sortedArrayToBST(int[] nums) {
         TreeNode root = null;
-        Map<TreeNode, Integer> balanceFactorMap = new HashMap<>(nums.length);
+        //树高
+        Map<TreeNode, Integer> treeHeightMap = new HashMap<>(nums.length);
         for (int num : nums) {
-            if (root == null) {
-                root = new TreeNode(num);
-                balanceFactorMap.put(root, 0);
-                continue;
-            }
-
+            root = insert(root, num, treeHeightMap);
         }
         return root;
+    }
+
+    /**
+     * 插入节点
+     *
+     * @param treeNode
+     * @param value
+     * @param treeHeightMap
+     * @return
+     */
+    private TreeNode insert(TreeNode treeNode, int value, Map<TreeNode, Integer> treeHeightMap) {
+        if (treeNode == null) {
+            treeNode = new TreeNode(value);
+        } else {
+
+            if (value < treeNode.val) {
+                treeNode.left = insert(treeNode.left, value, treeHeightMap);
+                if (!isBalance(treeNode, treeHeightMap)) {
+                    //如果左子树不平衡
+                    if (value < treeNode.left.val) {
+                        treeNode = rightRightRotation(treeNode);
+                    } else {
+                        treeNode = leftRightRotation(treeNode);
+                    }
+                }
+            } else if (value > treeNode.val) {
+                treeNode.right = insert(treeNode.right, value, treeHeightMap);
+                if (!isBalance(treeNode, treeHeightMap)) {
+                    //如果右子树不平衡
+                    if (value > treeNode.right.val) {
+                        treeNode = leftLeftRotation(treeNode);
+                    } else {
+                        treeNode = rightLeftRotation(treeNode);
+                    }
+                }
+            } else {
+                throw new RuntimeException("插入失败");
+            }
+        }
+        increaseHeight(treeNode, 1, treeHeightMap);
+        return treeNode;
+    }
+
+    private TreeNode leftLeftRotation(TreeNode treeNode) {
+        计算树高
+        TreeNode rightTreeNode = treeNode.right;
+        treeNode.right = rightTreeNode.left;
+        treeNode.right.left = treeNode;
+        return rightTreeNode;
+    }
+
+    private TreeNode leftRightRotation(TreeNode treeNode) {
+        treeNode.left = leftLeftRotation(treeNode.left);
+        return rightRightRotation(treeNode);
+    }
+
+    private TreeNode rightRightRotation(TreeNode treeNode) {
+        计算树高
+        TreeNode leftTreeNode = treeNode.left;
+        treeNode.left = leftTreeNode.right;
+        treeNode.left.right = treeNode;
+        return leftTreeNode;
+    }
+
+    private TreeNode rightLeftRotation(TreeNode treeNode) {
+        treeNode.right = rightRightRotation(treeNode.right);
+        return leftLeftRotation(treeNode);
+    }
+
+    private boolean isBalance(TreeNode treeNode, Map<TreeNode, Integer> treeHeightMap) {
+        if (treeNode == null) {
+            return true;
+        }
+        int lh = treeHeightMap.getOrDefault(treeNode.left, 0);
+        int rh = treeHeightMap.getOrDefault(treeNode.right, 0);
+        return Math.abs(lh - rh) <= 1;
+    }
+
+    private void increaseHeight(TreeNode treeNode, int setp, Map<TreeNode, Integer> treeHeightMap) {
+        if (treeNode == null) {
+            return;
+        }
+        int lh = treeHeightMap.getOrDefault(treeNode.left, 0);
+        int rh = treeHeightMap.getOrDefault(treeNode.right, 0);
+        treeHeightMap.put(treeNode, Math.max(lh, rh) + setp);
     }
 }

@@ -38,6 +38,8 @@ public class LongestPalindrome {
                 continue;
             }
 
+
+
             movLeft = !movLeft;
         }
         return longest;
