@@ -5,6 +5,8 @@ import org.eve.framework.list.ListNode;
 import org.eve.framework.tree.TreeNode;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 
 /**
@@ -26,6 +28,36 @@ public class Utils {
         printTreeNode(root.left);
         printTreeNode(root.right);
     }
+
+    /**
+     * 广度优先
+     *
+     * @param root
+     */
+    public static void gdyxPrintTreeNode(TreeNode root) {
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            root = stack.pop();
+            if (root == null) {
+                System.out.print("null ");
+            } else {
+                System.out.print(root.val + " ");
+                if (root.left == null) {
+                    System.out.print("null ");
+                } else {
+                    stack.push(root.left);
+                }
+                if (root.right == null) {
+                    System.out.print("null ");
+                } else {
+                    stack.push(root.right);
+                }
+            }
+        }
+        System.out.println();
+    }
+
 
     public static TreeNode buildTree(Integer... array) {
         if (array == null || array.length == 0 || array[0] == null) {

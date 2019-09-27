@@ -21,7 +21,7 @@ import java.util.Map;
 public class SortedArrayToBST {
     public static void main(String[] args) {
         TreeNode treeNode = new SortedArrayToBST().sortedArrayToBST(new int[]{-10, -3, 0, 5, 9});
-        Utils.printTreeNode(treeNode);
+        Utils.gdyxPrintTreeNode(treeNode);
     }
 
     public TreeNode sortedArrayToBST(int[] nums) {
@@ -52,9 +52,9 @@ public class SortedArrayToBST {
                 if (!isBalance(treeNode, treeHeightMap)) {
                     //如果左子树不平衡
                     if (value < treeNode.left.val) {
-                        treeNode = rightRightRotation(treeNode);
+                        treeNode = rightRightRotation(treeNode, treeHeightMap);
                     } else {
-                        treeNode = leftRightRotation(treeNode);
+                        treeNode = leftRightRotation(treeNode, treeHeightMap);
                     }
                 }
             } else if (value > treeNode.val) {
@@ -62,43 +62,45 @@ public class SortedArrayToBST {
                 if (!isBalance(treeNode, treeHeightMap)) {
                     //如果右子树不平衡
                     if (value > treeNode.right.val) {
-                        treeNode = leftLeftRotation(treeNode);
+                        treeNode = leftLeftRotation(treeNode, treeHeightMap);
                     } else {
-                        treeNode = rightLeftRotation(treeNode);
+                        treeNode = rightLeftRotation(treeNode, treeHeightMap);
                     }
                 }
             } else {
                 throw new RuntimeException("插入失败");
             }
         }
-        increaseHeight(treeNode, 1, treeHeightMap);
+        increaseHeight(treeNode, treeHeightMap);
         return treeNode;
     }
 
-    private TreeNode leftLeftRotation(TreeNode treeNode) {
-        计算树高
-        TreeNode rightTreeNode = treeNode.right;
-        treeNode.right = rightTreeNode.left;
-        treeNode.right.left = treeNode;
+    private TreeNode leftLeftRotation(TreeNode root, Map<TreeNode, Integer> treeHeightMap) {
+        TreeNode rightTreeNode = root.right;
+        root.right = rightTreeNode.left;
+        rightTreeNode.left = root;
+        increaseHeight(rightTreeNode.left, treeHeightMap);
+        increaseHeight(rightTreeNode, treeHeightMap);
         return rightTreeNode;
     }
 
-    private TreeNode leftRightRotation(TreeNode treeNode) {
-        treeNode.left = leftLeftRotation(treeNode.left);
-        return rightRightRotation(treeNode);
+    private TreeNode leftRightRotation(TreeNode treeNode, Map<TreeNode, Integer> treeHeightMap) {
+        treeNode.left = leftLeftRotation(treeNode.left, treeHeightMap);
+        return rightRightRotation(treeNode, treeHeightMap);
     }
 
-    private TreeNode rightRightRotation(TreeNode treeNode) {
-        计算树高
-        TreeNode leftTreeNode = treeNode.left;
-        treeNode.left = leftTreeNode.right;
-        treeNode.left.right = treeNode;
+    private TreeNode rightRightRotation(TreeNode root, Map<TreeNode, Integer> treeHeightMap) {
+        TreeNode leftTreeNode = root.left;
+        root.left = leftTreeNode.right;
+        leftTreeNode.right = root;
+        increaseHeight(leftTreeNode.right, treeHeightMap);
+        increaseHeight(leftTreeNode, treeHeightMap);
         return leftTreeNode;
     }
 
-    private TreeNode rightLeftRotation(TreeNode treeNode) {
-        treeNode.right = rightRightRotation(treeNode.right);
-        return leftLeftRotation(treeNode);
+    private TreeNode rightLeftRotation(TreeNode treeNode, Map<TreeNode, Integer> treeHeightMap) {
+        treeNode.right = rightRightRotation(treeNode.right, treeHeightMap);
+        return leftLeftRotation(treeNode, treeHeightMap);
     }
 
     private boolean isBalance(TreeNode treeNode, Map<TreeNode, Integer> treeHeightMap) {
@@ -110,12 +112,12 @@ public class SortedArrayToBST {
         return Math.abs(lh - rh) <= 1;
     }
 
-    private void increaseHeight(TreeNode treeNode, int setp, Map<TreeNode, Integer> treeHeightMap) {
+    private void increaseHeight(TreeNode treeNode, Map<TreeNode, Integer> treeHeightMap) {
         if (treeNode == null) {
             return;
         }
         int lh = treeHeightMap.getOrDefault(treeNode.left, 0);
         int rh = treeHeightMap.getOrDefault(treeNode.right, 0);
-        treeHeightMap.put(treeNode, Math.max(lh, rh) + setp);
+        treeHeightMap.put(treeNode, Math.max(lh, rh) + 1);
     }
 }
