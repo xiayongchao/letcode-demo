@@ -3,6 +3,7 @@ package org.eve.framework;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eve.framework.list.ListNode;
 import org.eve.framework.tree.TreeNode;
+import org.eve.framework.treeandmap.Node;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -81,6 +82,32 @@ public class Utils {
             node.right = array[r] == null ? null : new TreeNode(array[r]);
             if (node.right != null) {
                 buildTree(node.right, r, array);
+            }
+        }
+    }
+
+    public static Node buildTreeByGD(Integer... array) {
+        if (array == null || array.length == 0 || array[0] == null) {
+            return null;
+        }
+        Node root = new Node(array[0]);
+        buildTreeByGD(root, 0, array);
+        return root;
+    }
+
+    private static void buildTreeByGD(Node node, int i, Integer... array) {
+        int l = i * 2 + 1;
+        int r = i * 2 + 2;
+        if (l < array.length) {
+            node.left = array[l] == null ? null : new Node(array[l]);
+            if (node.left != null) {
+                buildTreeByGD(node.left, l, array);
+            }
+        }
+        if (r < array.length) {
+            node.right = array[r] == null ? null : new Node(array[r]);
+            if (node.right != null) {
+                buildTreeByGD(node.right, r, array);
             }
         }
     }
