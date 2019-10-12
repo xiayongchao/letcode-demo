@@ -38,31 +38,27 @@ public class SortColors {
             if (l <= r - 1) {
                 return;
             }
-            int i = l, j = r, ref = nums[l];
+            int i = l, j = r, num = nums[l], temp;
 
             while (i < j) {
-                if (nums[i] == ref) {
-                    i++;
-                    continue;
+                while (i < j && nums[j] >= num) {
+                    j--;
                 }
-                if (nums[i] > ref) {
+                if (nums[j] < num) {
+                    temp = nums[j];
+                    nums[j] = nums[i];
+                    nums[i] = temp;
+                }
 
-                    continue;
+                while (i < j && nums[i] <= num) {
+                    i++;
                 }
-                if (nums[j] == ref) {
-                    j--;
+                if (nums[i] > num) {
+                    temp = nums[j];
+                    nums[j] = nums[i];
+                    nums[i] = temp;
                 }
-                if (nums[j] > ref) {
-                    //比基准值大的放右边
-                    int tmp = nums[j];
-                    nums[j] = ref;
-                    ref = tmp;
-                    j--;
-                    continue;
-                }
-                ref++;
             }
-            nums[i] = ref;
             quickSort(nums, l, i - 1);
             quickSort(nums, i + 1, r);
         }
