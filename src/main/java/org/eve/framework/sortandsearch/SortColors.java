@@ -35,9 +35,6 @@ public class SortColors {
         }
 
         private void quickSort(int[] nums, int l, int r) {
-            if (l <= r - 1) {
-                return;
-            }
             int i = l, j = r, num = nums[l], temp;
 
             while (i < j) {
@@ -59,8 +56,12 @@ public class SortColors {
                     nums[i] = temp;
                 }
             }
-            quickSort(nums, l, i - 1);
-            quickSort(nums, i + 1, r);
+            if (i > l) {
+                quickSort(nums, l, i - 1);
+            }
+            if (j < r) {
+                quickSort(nums, i + 1, r);
+            }
         }
     }
 }
