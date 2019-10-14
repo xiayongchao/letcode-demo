@@ -1,9 +1,7 @@
 package org.eve.framework.sortandsearch;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
+ * 25%
  * 数组中的第K个最大元素
  * 在未排序的数组中找到第 k 个最大的元素。请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
  * https://leetcode-cn.com/explore/interview/card/top-interview-questions-medium/50/sorting-and-searching/98/
@@ -28,33 +26,42 @@ public class FindKthLargest {
 
     static class Solution {
         public int findKthLargest(int[] nums, int k) {
-            Set<Integer> set = new HashSet<>(nums.length);
-            for (int num : nums) {
-                set.add(num);
-            }
-
-            nums = new int[set.size()];
-            int i = 0;
-            for (Integer num : set) {
-                nums[i] = num;
-                i++;
-            }
             Integer largest = findKthLargest(nums, k, 0, nums.length - 1);
-
+            if (largest == null) {
+                largest = nums[nums.length - k];
+            }
             return largest;
         }
 
         private Integer findKthLargest(int[] nums, int k, int left, int right) {
-            int start = left, ended = right, key = nums[left];
+            int start = left, ended = right, key = nums[left], temp;
             while (start < ended) {
-
+                while (start < ended && nums[ended] >= key) {
+                    ended--;
+                }
+                if (nums[ended] < key) {
+                    temp = nums[start];
+                    nums[start] = nums[ended];
+                    nums[ended] = temp;
+                }
+                while (start < ended && nums[start] <= key) {
+                    start++;
+                }
+                if (nums[start] > key) {
+                    temp = nums[start];
+                    nums[start] = nums[ended];
+                    nums[ended] = temp;
+                }
             }
 
             if (start + k == nums.length) {
-                return nums[k];
+                return nums[start];
             }
-            if (left < start) {
+            if (left < start && nums.length - k < start) {
                 findKthLargest(nums, k, left, start - 1);
+            }
+            if (ended < right && nums.length - k > ended) {
+                findKthLargest(nums, k, ended + 1, right);
             }
             return null;
         }
