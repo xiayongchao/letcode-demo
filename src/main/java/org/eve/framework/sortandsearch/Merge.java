@@ -27,6 +27,13 @@ import java.util.List;
 public class Merge {
     public static void main(String[] args) {
         int[][] merge = new Solution().merge(new int[][]{
+                {4, 5}, {2, 4}, {4, 6}, {3, 4}, {0, 0}, {1, 1}, {3, 5}, {2, 2}
+        });
+        for (int[] ints : merge) {
+            System.out.println(Gsons.getJson(ints));
+        }
+        System.out.println("--------------------------");
+        /*merge = new Solution().merge(new int[][]{
 
         });
         for (int[] ints : merge) {
@@ -60,7 +67,7 @@ public class Merge {
         });
         for (int[] ints : merge) {
             System.out.println(Gsons.getJson(ints));
-        }
+        }*/
     }
 
     static class Solution {
@@ -79,7 +86,7 @@ public class Merge {
                 while (start < ended && intervals[start][0] <= key) {
                     start++;
                 }
-                if (intervals[ended][0] > key) {
+                if (intervals[start][0] > key) {
                     temp = intervals[start];
                     intervals[start] = intervals[ended];
                     intervals[ended] = temp;
